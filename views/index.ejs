@@ -1,11 +1,31 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
+
+<head>
+  <title>Cloudy-Drive</title>
+  <%- include('partials/head') %>
+</head>
+
+<body class="p-0 m-0 d-flex flex-column vh-100">
+  <%- include('partials/navbar') %>
+    <div class="container p-5 m-0 flex-grow-1">
+
+      <h1>Cloudy drive</h1>
+      <p>Welcome to cloudy drive, a a stripped down version of Google Drive. :)</p>
+      <p>This is part of the projects of The Odin Project course</p>
+
+      <div class="d-flex gap-5 mt-5">
+        <a href="/users/sign-in">
+          <button type="button" class="btn btn-dark">Log In</button>
+        </a>
+        <a href="/users/sign-up">
+          <button type="button" class="btn btn-dark">Sign Up </button>
+        </a>
+      </div>
+
+
+    </div>
+    <%- include('partials/footer') %>
+</body>
+
 </html>
