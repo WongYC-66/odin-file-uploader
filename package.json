@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node ./bin/www",
     "devstart": "nodemon ,.bin/www",
-    "serverstart": "DEBUG=odin-file-uploader:* && npm run devstart"
+    "serverstart": "DEBUG=odin-file-uploader:* && npm run devstart",
+    "populateDB" : "npx prisma migrate reset && node populateDB"
   },
   "dependencies": {
     "@prisma/client": "^5.18.0",

@@ -14,29 +14,39 @@ datasource db {
 }
 
 model User {
+  id           Int        @id @default(autoincrement())
+  username     String
+  password     String
+  mainFolder   MainFolder @relation("createdBy", fields: [mainFolderId], references: [id])
+  mainFolderId Int        @unique
+}
+
+model MainFolder {
   id         Int      @id @default(autoincrement())
-  username   String
-  password   String
-  homeFolder Folder[] @relation("createdBy")
+  user       User?    @relation("createdBy")
+  subFolders Folder[] @relation("masterFolder")
+  files      File[]   @relation("masterFiles")
 }
 
 model Folder {
-  id           Int      @id @default(autoincrement())
+  id           Int         @id @default(autoincrement())
   name         String
-  files        File[]   @relation("insideFolder")
-  User         User     @relation("createdBy", fields: [userId], references: [id])
-  userId       Int
+  files        File[]      @relation("insideFolder")
+  mainFolder   MainFolder? @relation("masterFolder", fields: [mainFolderId], references: [id])
+  mainFolderId Int?
+  subFolders   Folder[]    @relation("ParentChild")
+  parentFolder Folder?      @relation("ParentChild", fields: [parentId], references: [id])
   parentId     Int?
-  subFolder    Folder[] @relation("ParentChild")
-  parentFolder Folder?  @relation("ParentChild", fields: [parentId], references: [id])
 }
 
 model File {
-  id       Int     @id @default(autoincrement())
-  name     String
-  link     String
-  Folder   Folder? @relation("insideFolder", fields: [folderId], references: [id])
-  folderId Int?
+  id           Int         @id @default(autoincrement())
+  name         String
+  link         String
+  Folder       Folder?     @relation("insideFolder", fields: [folderId], references: [id])
+  folderId     Int?
+  mainFolder   MainFolder? @relation("masterFiles", fields: [mainFolderId], references: [id])
+  mainFolderId Int?
 }
 
 model Session {
