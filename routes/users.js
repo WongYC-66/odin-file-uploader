@@ -1,23 +1,21 @@
 var express = require('express');
 var router = express.Router();
 
+var usersController = require('../controllers/users.js')
+
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   res.redirect('/')
 });
 
-router.get('/sign-in', function(req, res, next) {
-  res.render('sign-in');
-});
+router.get('/sign-in', usersController.sign_in_get);
 
-router.get('/sign-out', function(req, res, next) {
-  // req.user.logoff? passport logoff?
-  res.send('logging off user');
-});
+router.post('/sign-in', usersController.sign_in_post);
 
-router.get('/sign-up', function(req, res, next) {
-  res.render('sign-up');
-});
+router.get('/sign-up', usersController.sign_up_get);
 
+router.post('/sign-up', usersController.sign_up_post);
+
+router.get('/sign-out', usersController.sign_out_get);
 
 module.exports = router;

@@ -3,11 +3,14 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index');
-});
+  // console.log(req.user)
+  if(!req.user){
+    res.render('index');
+    return 
+  }
 
-router.get('/sign-in', function(req, res, next) {
-  res.send('testing')
+  res.render('index', {user : req.user});
+
 });
 
 

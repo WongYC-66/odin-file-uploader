@@ -7,25 +7,43 @@
 </head>
 
 <body class="p-0 m-0 d-flex flex-column vh-100">
+
   <%- include('partials/navbar') %>
-    <div class="container p-5 m-0 flex-grow-1">
 
-      <h1>Cloudy drive</h1>
-      <p>Welcome to cloudy drive, a a stripped down version of Google Drive. :)</p>
-      <p>This is part of the projects of The Odin Project course</p>
+  <div class="container p-5 m-0 flex-grow-1">
 
-      <div class="d-flex gap-5 mt-5">
-        <a href="/users/sign-in">
-          <button type="button" class="btn btn-dark">Log In</button>
-        </a>
-        <a href="/users/sign-up">
-          <button type="button" class="btn btn-dark">Sign Up </button>
-        </a>
-      </div>
+    <% if (typeof user === 'undefined') { %>
+    <!-- Not logged in -->
 
-
+    <h1>Cloudy drive</h1>
+    <p>Welcome to cloudy drive, a a stripped down version of Google
+      Drive. :)</p>
+    <p>This is part of the projects of The Odin Project course</p>
+    <div class="d-flex gap-5 mt-5"> <a href="/users/sign-in"> <button type="button" class="btn btn-dark">Log In</button> </a>
+      <a href="/users/sign-up"> <button type="button" class="btn btn-dark">Sign Up </button> </a>
     </div>
-    <%- include('partials/footer') %>
+
+    <% } else { %>
+    <!-- Logged-in -->
+    <!-- Folders section -->
+    <h4>Folders</h4>
+    <hr>
+    <!-- Files section -->
+    <h4>Files</h4>
+
+    <hr>
+
+    <!-- upload files -->
+    <form action="/files/home" method="post" enctype="multipart/form-data">
+      <div class="mb-3">
+        <label for="formFileMultiple" class="form-label">Upload Files</label>
+        <input class="form-control" name='uploaded' type="file" id="formFileMultiple" multiple>
+      </div>
+      <button type='submit' class="btn btn-dark">Upload</button>
+    </form>
+    <% } %>
+  </div>
+  <%- include('partials/footer') %>
 </body>
 
 </html>

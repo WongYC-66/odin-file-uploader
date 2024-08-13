@@ -12,3 +12,36 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id              Int      @id @default(autoincrement())
+  username        String   @db.VarChar(255)
+  password        String   @db.VarChar(255)
+  homepageFolders Folder[]
+  homepageFiles   File[]
+}
+
+model Folder {
+  id     Int    @id @default(autoincrement())
+  name   String @db.VarChar(255)
+  files  File[]
+  User   User?  @relation(fields: [userId], references: [id])
+  userId Int?
+}
+
+model File {
+  id       Int     @id @default(autoincrement())
+  name     String  @db.VarChar(255)
+  link     String  @db.VarChar(255)
+  User     User?   @relation(fields: [userId], references: [id])
+  userId   Int?
+  Folder   Folder? @relation(fields: [folderId], references: [id])
+  folderId Int?
+}
+
+model Session {
+  id        String   @id
+  sid       String   @unique
+  data      String   @db.VarChar(255) // MediumText may be needed for MySql
+  expiresAt DateTime
+}
