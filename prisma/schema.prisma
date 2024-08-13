@@ -14,28 +14,28 @@ datasource db {
 }
 
 model User {
-  id              Int      @id @default(autoincrement())
-  username        String   @db.VarChar(255)
-  password        String   @db.VarChar(255)
-  homepageFolders Folder[]
-  homepageFiles   File[]
+  id         Int      @id @default(autoincrement())
+  username   String
+  password   String
+  homeFolder Folder[] @relation("createdBy")
 }
 
 model Folder {
-  id     Int    @id @default(autoincrement())
-  name   String @db.VarChar(255)
-  files  File[]
-  User   User?  @relation(fields: [userId], references: [id])
-  userId Int?
+  id           Int      @id @default(autoincrement())
+  name         String
+  files        File[]   @relation("insideFolder")
+  User         User     @relation("createdBy", fields: [userId], references: [id])
+  userId       Int
+  parentId     Int?
+  subFolder    Folder[] @relation("ParentChild")
+  parentFolder Folder?  @relation("ParentChild", fields: [parentId], references: [id])
 }
 
 model File {
   id       Int     @id @default(autoincrement())
-  name     String  @db.VarChar(255)
-  link     String  @db.VarChar(255)
-  User     User?   @relation(fields: [userId], references: [id])
-  userId   Int?
-  Folder   Folder? @relation(fields: [folderId], references: [id])
+  name     String
+  link     String
+  Folder   Folder? @relation("insideFolder", fields: [folderId], references: [id])
   folderId Int?
 }
 
