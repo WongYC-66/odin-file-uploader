@@ -5,14 +5,8 @@ var filesController = require('../controllers/files.js')
 const multer = require('multer')
 const upload = multer({ dest: './uploads/' })
 
-// router.get('/sign-in', usersController.sign_in_get);
+router.get('/:fileId', filesController.file_get);
 
-router.post('/home', filesController.home_post);
-
-// router.get('/sign-up', usersController.sign_up_get);
-
-// router.post('/sign-up', usersController.sign_up_post);
-
-// router.get('/sign-out', usersController.sign_out_get);
+router.post('/:folderId', filesController.files_post);
 
 module.exports = router;

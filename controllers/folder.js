@@ -8,34 +8,38 @@ exports.folder_get = async (req, res, next) => {
         return
     }
 
-    const { folderId } = req.params
-    // console.log(folderId)
+    try {
+        const { folderId } = req.params
+        // console.log(folderId)
 
-    // get folder list inside folder of folderId
-    const { name: folderName, subFolders } = await prisma.folder.findUnique({
-        where: {
-            id: Number(folderId)
-        },
-        select: {
-            name: true,
-            subFolders: true
-        }
-    })
+        // get folder list inside folder of folderId
+        const { name: folderName, subFolders } = await prisma.folder.findUnique({
+            where: {
+                id: Number(folderId)
+            },
+            select: {
+                name: true,
+                subFolders: true
+            }
+        })
 
-    // get file list inside folder of folderId
-    const files = await prisma.file.findMany({
-        where: {
-            folderId: Number(folderId)
-        }
-    })
+        // get file list inside folder of folderId
+        const files = await prisma.file.findMany({
+            where: {
+                folderId: Number(folderId)
+            }
+        })
 
-    res.render('index', {
-        user: req.user,
-        subFolders,
-        files,
-        folderName,
-        folderId,
-    });
+        res.render('index', {
+            user: req.user,
+            subFolders,
+            files,
+            folderName,
+            folderId,
+        });
+    } catch {
+        res.status('404').send('Page not found')
+    }
 }
 
 // create sub-folder
@@ -124,7 +128,7 @@ exports.folder_delete = async (req, res, next) => {
 
     const { folderId } = req.params
 
-    console.log('delete req')
+    console.log('delete req', folderId)
 
     // get the parentId to redirect later
     const { parentId } = await prisma.folder.findUnique({
@@ -135,16 +139,19 @@ exports.folder_delete = async (req, res, next) => {
             parentId: true,
         }
     })
+    console.log({ parentId })
 
     // update subfolder
     await prisma.folder.delete({
         where: {
-            id: Number(targetId)
+            id: Number(folderId)
         },
     })
 
-    if (folderId == 'master')
-        res.redirect('/')
+    if (parentId == null || parentId == 'null') {
+        res.json({ redirect: '/' });
+        return
+    }
 
-    res.redirect(`/folder/${parentId}`);
+    res.json({ redirect: `/folder/${parentId}` });
 }

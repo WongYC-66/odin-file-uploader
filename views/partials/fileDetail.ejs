@@ -1,0 +1,40 @@
+<!-- Folders section -->
+<h4><%= file.name %></h4>
+
+<table class="table table-borderless">
+    <tbody>
+        <tr>
+            <td>Id</td>
+            <td><%= file.id %></td>
+        </tr>
+        <tr>
+            <td>Size</td>
+            <td><%= file.size %>B</td>
+        </tr>
+        <tr>
+            <td>Upload Time</td>
+            <td><%= file.createdAt %></td>
+        </tr>
+        <tr>
+            <td>At folder </td>
+            <% if (file.mainFolder == null) { %>
+                <td>
+                    <a href="/folder/<%= file.Folder.id %>">
+                        <%= file.Folder.name %>
+                    </a>
+                </td>
+             
+            <% } else { %>
+                <td>
+                    <a href="/">
+                        Home
+                    </a>
+                </td>
+            <% } %>
+        </tr>
+    </tbody>
+</table>
+
+<a href="<%= file.url  %>" target="_blank">
+    <button class="btn btn-dark">Download</button>
+</a>

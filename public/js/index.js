@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('rename_btn').addEventListener('click', async function (event) {
+    const rename_btn = document.getElementById('rename_btn')
+    rename_btn && rename_btn.addEventListener('click', async function (event) {
+        event.preventDefault()
         try {
             const folderId = window.location.pathname.split('/').at(-1)
             const updatedFolderName = document.getElementById('newFolderName').value
@@ -26,7 +28,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    document.getElementById('delete_btn').addEventListener('click', async function (event) {
+    const delete_btn = document.getElementById('delete_btn')
+    delete_btn && delete_btn.addEventListener('click', async function (event) {
+        event.preventDefault()
+
         try {
             const folderId = window.location.pathname.split('/').at(-1)
             const response = await fetch(`/folder/${folderId}`, {
