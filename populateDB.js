@@ -26,15 +26,23 @@ const main = async () => {
                                     create: [
                                         {
                                             name: "diary_001.txt",
-                                            link: 'fake_link_001'
+                                            url: 'fake_link_001',
+                                            size: 10001,
                                         },
                                         {
                                             name: "diary_002.txt",
-                                            link: 'fake_link_002'
+                                            url: 'fake_link_002',
+                                            size: 15000,
                                         }
                                     ]
                                 }
                             }
+                        ]
+                    },
+                    files: {
+                        create: [
+                            {name: 'homeFile001', url:'null1', size: 9400},
+                            {name: 'homeFile002', url:'null2', size: 14000},
                         ]
                     }
                 }

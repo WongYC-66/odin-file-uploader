@@ -12,27 +12,32 @@ router.get('/', async (req, res, next) => {
     return
   }
   // console.log(req.user)
-  const userId = req.user.id
 
-  // get folder list inside homeFolder
-  const {folders} = await prisma.user.findUnique({
+  // get folder list inside MainFolder
+  const {subFolders} = await prisma.mainFolder.findUnique({
     where: {
-      id: userId
+      id: req.user.mainFolderId
     },
     select: {
-      folders: {
-        where: {
-          parentId: {
-            equals: null
-          }
-        }
-      }
+      subFolders: true
     }
   })
-  console.log(folders)
-  // get file list inside homeFolder
-
-  res.render('index', { user: req.user });
+  // console.log(subFolders)
+  // get file list inside MainFolder
+  const files = await prisma.file.findMany({
+    where: {
+      mainFolderId: req.user.mainFolderId
+    }
+  })
+  // console.log(files)
+  
+  res.render('index', { 
+    user: req.user, 
+    subFolders, 
+    files, 
+    folderName: 'Home',
+    folderId: 'master'
+  });
 
 });
 

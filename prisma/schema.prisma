@@ -35,14 +35,16 @@ model Folder {
   mainFolder   MainFolder? @relation("masterFolder", fields: [mainFolderId], references: [id])
   mainFolderId Int?
   subFolders   Folder[]    @relation("ParentChild")
-  parentFolder Folder?      @relation("ParentChild", fields: [parentId], references: [id])
+  parentFolder Folder?     @relation("ParentChild", fields: [parentId], references: [id])
   parentId     Int?
 }
 
 model File {
   id           Int         @id @default(autoincrement())
   name         String
-  link         String
+  size         Int
+  createdAt    DateTime    @default(now())
+  url          String
   Folder       Folder?     @relation("insideFolder", fields: [folderId], references: [id])
   folderId     Int?
   mainFolder   MainFolder? @relation("masterFiles", fields: [mainFolderId], references: [id])

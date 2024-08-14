@@ -1,13 +1,68 @@
 <!-- Folders section -->
-<h4>Folders</h4>
+<h4><%= folderName %>
+  <!-- delete this folder btn / rename this folder input form-->
+  <% if (folderName !== 'Home') { %>
+    <span class="input-group">
+      <button id="delete_btn" class="btn btn-danger" form="deleteForm"><i class="bi bi-trash3-fill"></i> delete</button>
+
+      <input type="text" class="form-control" id="newFolderName" placeholder="...">
+      <button id="rename_btn" class="btn btn-warning">rename</button>
+    </span>
+  <% } %>
+</h4>
+
+<!-- Render Folders -->
+<div class="d-flex gap-5">
+
+  <% if (typeof subFolders != 'undefined' && subFolders.length) { %>
+  <% for( let {name, id} of subFolders ) { %>
+  <a href="/folder/<%= id %>">
+    <i class="bi bi-briefcase" style="font-size: 5rem;"></i>
+    <p class="text-truncate"><%= name %></p>
+  </a>
+  <% } %>
+
+  <% } else { %>
+  <p>No folder ...</p>
+  <% }  %>
+</div>
+
+
+
+<!-- ------------------------------------- -->
 <hr>
+
 <!-- Files section -->
 <h4>Files</h4>
+<div class="d-flex gap-2">
 
+  <% if (typeof files != 'undefined' && files.length) { %>
+  <% for( let {name, id , link} of files ) { %>
+  <a href="/files/<%= id %>">
+    <i class="bi bi-file-earmark" style="font-size: 2rem;"></i>
+    <p><%= name %></p>
+  </a>
+  <% } %>
+
+  <% } else { %>
+  <p>No file ...</p>
+  <% }  %>
+</div>
+
+
+<!-- ------------------------------------- -->
 <hr>
+<!-- create new folder button -->
+<form action="/folder/<%=folderId%>" method="post" class="d-flex">
+  <div class="form-floating">
+    <input type="text" class="form-control" id="newFolderName" name="newFolderName" placeholder="">
+    <label for="newFolderName">New Folder Name</label>
+  </div>
+  <button type='submit' class="btn btn-dark">Create Folder</button>
+</form>
 
-<!-- upload files -->
-<form action="/files/home" method="post" enctype="multipart/form-data">
+<!-- upload files button -->
+<form action="/files/<%= folderId %>" method="post" enctype="multipart/form-data">
   <div class="mb-3">
     <label for="formFileMultiple" class="form-label">Upload Files</label>
     <input class="form-control" name='uploaded' type="file" id="formFileMultiple" multiple>
