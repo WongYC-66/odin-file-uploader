@@ -27,12 +27,12 @@ exports.files_post = [
         try {
             if (req.files.length <= 0) throw Error()
             const { folderId } = req.params
-            console.log({ folderId })
+            // console.log({ folderId })
 
-            console.log(req.files)
+            // console.log(req.files)
             await uploadToDataBase(req, req.files, folderId)
 
-            console.log('File uploaded successfully!');
+            // console.log('File uploaded successfully!');
 
             if (folderId === 'master') {
                 res.redirect('/')
@@ -48,7 +48,7 @@ exports.files_post = [
 ]
 
 const uploadToDataBase = async (req, filesArr, folderId) => {
-    console.log(filesArr, folderId)
+    // console.log(filesArr, folderId)
 
     let jobs = filesArr.map(async (fileInfo) => {
 
@@ -126,7 +126,7 @@ const uploadToDataBase = async (req, filesArr, folderId) => {
 }
 
 exports.file_get = async (req, res, next) => {
-    console.log('getting file')
+    // console.log('getting file')
     const { fileId } = req.params
 
     try {
@@ -140,14 +140,14 @@ exports.file_get = async (req, res, next) => {
                 mainFolder: true,
             }
         })
-        console.log(file)
+        // console.log(file)
 
         // get download link from supabase
         const { data, error } = await supabase
             .storage
             .from('everything')
             .createSignedUrl(file.url, 3600, { download: true })  // URL valid for 3600 seconds
-        console.log(data)
+        // console.log(data)
         if (data)
             file.url = data.signedUrl
 

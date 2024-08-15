@@ -1,0 +1,39 @@
+<!-- Folders section -->
+<h4><%= folderName %></h4>
+
+<!-- Render Folders -->
+<div class="d-flex gap-5">
+
+  <% if (typeof subFolders != 'undefined' && subFolders.length) { %>
+  <% for( let {name, id} of subFolders ) { %>
+  <a href="/share/folder/<%= linkId %>/<%= id %>">
+    <i class="bi bi-briefcase" style="font-size: 5rem;"></i>
+    <p class="text-truncate"><%= name %></p>
+  </a>
+  <% } %>
+
+  <% } else { %>
+  <p>No folder ...</p>
+  <% }  %>
+</div>
+
+
+<!-- ------------------------------------- -->
+<hr>
+
+<!-- Files section -->
+<h4>Files</h4>
+<div class="d-flex gap-2">
+
+  <% if (typeof files != 'undefined' && files.length) { %>
+  <% for( let {name, id , link} of files ) { %>
+  <a href="/share/files/<%= linkId %>/<%= id %>">
+    <i class="bi bi-file-earmark" style="font-size: 2rem;"></i>
+    <p><%= name %></p>
+  </a>
+  <% } %>
+
+  <% } else { %>
+  <p>No file ...</p>
+  <% }  %>
+</div>

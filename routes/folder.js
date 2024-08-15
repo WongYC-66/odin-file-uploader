@@ -3,6 +3,10 @@ var router = express.Router();
 
 var folderController = require('../controllers/folder.js')
 
+router.get('/', function (req, res, next) {
+    res.redirect('/')
+});
+
 router.get('/:folderId', folderController.folder_get);
 
 router.post('/:folderId', folderController.folder_post);

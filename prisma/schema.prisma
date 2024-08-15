@@ -51,9 +51,19 @@ model File {
   mainFolderId Int?
 }
 
+// User login session
 model Session {
   id        String   @id
   sid       String   @unique
   data      String   @db.VarChar(255) // MediumText may be needed for MySql
   expiresAt DateTime
+}
+
+// share folder session
+model ShareLink {
+  id              String   @id @default(uuid())
+  folderId        Int
+  expirationDate  DateTime
+  createdAt       DateTime @default(now())
+  isMainFolder    Boolean  @default(false)
 }

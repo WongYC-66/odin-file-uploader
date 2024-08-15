@@ -3,7 +3,6 @@ var router = express.Router();
 
 var usersController = require('../controllers/users.js')
 
-/* GET users listing. */
 router.get('/', function(req, res, next) {
   res.redirect('/')
 });

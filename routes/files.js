@@ -5,6 +5,10 @@ var filesController = require('../controllers/files.js')
 const multer = require('multer')
 const upload = multer({ dest: './uploads/' })
 
+router.get('/', function(req, res, next) {
+    res.redirect('/')
+});
+
 router.get('/:fileId', filesController.file_get);
 
 router.post('/:folderId', filesController.files_post);

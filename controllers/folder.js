@@ -98,7 +98,7 @@ exports.folder_update = async (req, res, next) => {
 
     const { folderId } = req.params
     const { updatedFolderName } = req.body
-    console.log('update req')
+    // console.log('update req')
 
 
     // update subfolder
@@ -128,7 +128,7 @@ exports.folder_delete = async (req, res, next) => {
 
     const { folderId } = req.params
 
-    console.log('delete req', folderId)
+    // console.log('delete req', folderId)
 
     // get the parentId to redirect later
     const { parentId } = await prisma.folder.findUnique({
@@ -139,7 +139,7 @@ exports.folder_delete = async (req, res, next) => {
             parentId: true,
         }
     })
-    console.log({ parentId })
+    // console.log({ parentId })
 
     // update subfolder
     await prisma.folder.delete({

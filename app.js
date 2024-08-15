@@ -8,7 +8,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var filesRouter = require('./routes/files');
 var folderRouter = require('./routes/folder');
-
+var shareRouter = require('./routes/share');
 
 // Prisma + express session
 const passport = require('passport')
@@ -61,6 +61,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/files', filesRouter);
 app.use('/folder', folderRouter);
+app.use('/share', shareRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
