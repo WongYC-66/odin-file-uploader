@@ -9,7 +9,7 @@ This is part of the projects of The Odin Project course
 
 ## Live demo
 
-- https://odin-file-uploader.adaptable.app/
+- https://odin-file-uploader-gxe3.onrender.com/
 
 
 ## Tech-stack
