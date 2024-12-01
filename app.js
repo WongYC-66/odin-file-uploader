@@ -23,23 +23,63 @@ if (process.env.NODE_ENV !== 'production')
 var app = express();
 
 // Prisma + express session
-app.use(
-  expressSession({
-    cookie: {
-      //  maxAge: 7 * 24 * 60 * 60 * 1000 // ms
-      maxAge: 24 * 60 * 60 * 1000 // ms
-    },
-    secret: process.env.secret_key,
-    resave: true,
-    saveUninitialized: true,
-    store: new PrismaSessionStore(
-      new PrismaClient(),
-      {
-        checkPeriod: 60 * 60 * 1000,  //ms
+// Middleware to ensure database connectivity and initialize session store
+let prisma;
+let sessionStore;
+
+// Middleware to initialize Prisma and check database connectivity
+const initializePrisma = async () => {
+  try {
+    prisma = new PrismaClient();
+    await prisma.$connect();
+    console.log("Connected to the database.");
+    return true;
+  } catch (err) {
+    console.error("Database connection error1:", err.message);
+    prisma = null;
+    return false;
+  }
+};
+
+// Middleware to initialize PrismaSessionStore
+const initializeSessionStore = async () => {
+  if (!sessionStore && prisma) {
+    try {
+      sessionStore = new PrismaSessionStore(prisma, {
+        checkPeriod: 60 * 60 * 1000, // Check expired sessions every hour
         dbRecordIdIsSessionId: true,
         dbRecordIdFunction: undefined,
-      }
-    )
+      });
+      console.log("PrismaSessionStore initialized.");
+    } catch (err) {
+      console.error("Failed to initialize PrismaSessionStore:", err.message);
+      sessionStore = null;
+    }
+  }
+};
+
+app.use(async (req, res, next) => {
+  const isDatabaseConnected = await initializePrisma();
+  if (!isDatabaseConnected) {
+    console.error("Database failure, check connectivitiy");
+    // Send JSON response about database failure
+    return res.status(503).json({
+      success: false,
+      message: "The database is currently offline. Please try again later.",
+    });
+  }
+  await initializeSessionStore();
+  next();
+});
+
+// Set up express-session with fallback
+app.use(
+  expressSession({
+    cookie: { maxAge: 24 * 60 * 60 * 1000 }, // 1 day
+    secret: process.env.secret_key || 'fallback-secret-key',
+    resave: true,
+    saveUninitialized: true,
+    store: sessionStore || undefined, // Use PrismaSessionStore if available
   })
 );
 
